@@ -3,6 +3,7 @@ import Image from "next/image";
 import {ImageZoom} from "@/components/image-zoom";
 import "@mantine/code-highlight/styles.css";
 import CodeHighlight from "@/features/code-highlight/CodeHighlight";
+import {omit} from "next/dist/shared/lib/router/utils/omit";
 
 export function parseArticleBodyToReact(html: string) {
   return parse(html, {
@@ -19,12 +20,16 @@ export function parseArticleBodyToReact(html: string) {
           // @ts-expect-error I think because childNodes comes from react-html-parse this is okay to do
           const codeContent = domToReact(codeElement.childNodes).toString();
           const language = codeElement.attribs.class.replace("language-", "");
+          console.log('codeElement',codeElement);
 
           return (
-            <CodeHighlight
-              code={codeContent}
-              language={language.trim()}
-            />
+            <>
+              {JSON.stringify(omit(codeElement, ['parent','children', 'childNodes', 'firstChild', 'lastChild']))}
+              <CodeHighlight
+                code={codeContent}
+                language={language.trim()}
+              />
+            </>
           );
         }
 

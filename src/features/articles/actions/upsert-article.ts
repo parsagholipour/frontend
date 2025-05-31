@@ -35,6 +35,7 @@ export async function upsertArticleAction(
       await createArticle(values);
     }
   } catch (err) {
+    console.log('eeee', err.response?.data);
     if (
       err instanceof DALDriverError &&
       (err.statusCode === 400 || err.statusCode == 401)
